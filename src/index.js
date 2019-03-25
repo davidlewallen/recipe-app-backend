@@ -21,27 +21,30 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(assetFolder));
-app.use(session({
-  secret: 'secrets',
-  resave: true,
-  saveUninitialized: false,
-}));
+app.use(
+  session({
+    secret: 'secrets',
+    resave: true,
+    saveUninitialized: false,
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
 const Account = require('./models/account');
+
 passport.use(Account.createStrategy());
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 app.get('/', (req, res) => {
-  res.sendFile(assetFolder + '/index.html');
+  res.sendFile(`${assetFolder}/index.html`);
 });
 
 app.use('/api', routes);
 
 app.get('/*', (req, res) => {
-  res.sendFile(assetFolder + '/index.html');
+  res.sendFile(`${assetFolder}/index.html`);
 });
 
 app.listen(PORT, async () => {
