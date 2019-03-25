@@ -3,7 +3,42 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "moment": "^2.22.2",
+    "mongoose": "^4.13.18",
+    "morgan": "^1.9.1",
+    "nodemailer": "^4.6.8",
+    "passport": "^0.4.0",
+    "passport-local-mongoose": "^5.0.1",
+    "uuid": "^3.3.2",
+    "validator": "^10.8.0"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "eslint": "^5.3.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "husky": "^1.1.2",
+    "lint-staged": "^7.3.0",
+    "prettier": "^1.14.3"
+  },
+  "lint-staged": {
+    "src/**/*.{js,json}": [
+      "prettier --config .prettierrc --write",
+      "git add"
+    ]
+  },
   "scripts": {
+    "precommit": "lint-staged",
+    "start": "node ./server/index.js",
+    "server:prod": "cross-env PORT=3001 NODE_ENV=production nodemon -w ./server ./server/index.js",
+    "server:dev": "cross-env PORT=3001 NODE_ENV=dev nodemon -w ./server ./server/index.js",
+    "server:automation": "cross-env PORT=3001 NODE_ENV=test nodemon -w ./server ./server/index.js",
+    "server:test": "cross-env NODE_ENV=test jest --env=node --testPathPattern=server --watch --i",
+    "server:coverage": "cross-env NODE_ENV=test jest --env=node --testPathPattern=/server --coverage --collectCoverageFrom=server/**/*.{js,jsx,mjs} --i --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
