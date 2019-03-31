@@ -18,7 +18,8 @@ describe('Geniuskitchen Rules Test', () => {
   let dom = null;
 
   beforeAll(async () => {
-    const url = 'http://www.geniuskitchen.com/recipe/citrusy-kale-salad-w-blueberries-and-pepitas-variations-462594';
+    const url =
+      'http://www.geniuskitchen.com/recipe/citrusy-kale-salad-w-blueberries-and-pepitas-variations-462594';
     const res = await axios.get(url);
     const html = res.data;
     dom = new JSDOM(html);
@@ -56,19 +57,19 @@ describe('Geniuskitchen Rules Test', () => {
     });
   });
 
-  describe('stripImageURL', () => {
-    it('should strip image from website', () => {
-      const results = stripImageURL(dom);
+  // describe('stripImageURL', () => {
+  //   it('should strip image from website', () => {
+  //     const results = stripImageURL(dom);
 
-      expect(results).toEqual(expectedData.geniuskitchen.imageURL);
-    });
-  });
+  //     expect(results).toEqual(expectedData.geniuskitchen.imageURL);
+  //   });
+  // });
 
-  describe('strip', () => {
-    it('should strip ingredients, instructions, title, and build an object', () => {
-      const results = strip(dom);
+  // describe('strip', () => {
+  //   it('should strip ingredients, instructions, title, and build an object', () => {
+  //     const results = strip(dom);
 
-      expect(results).toEqual(expectedData.geniuskitchen.full);
-    });
-  });
+  //     expect(results).toEqual(expectedData.geniuskitchen.full);
+  //   });
+  // });
 });
