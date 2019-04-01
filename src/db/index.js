@@ -1,6 +1,5 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
+require('dotenv').config();
+
 const mongoose = require('mongoose');
 
 module.exports = {
@@ -25,5 +24,5 @@ module.exports = {
     if (process.env.NODE_ENV !== 'test') {
       db.once('open', () => console.log('connected mongoose'));
     }
-  }
+  },
 };
