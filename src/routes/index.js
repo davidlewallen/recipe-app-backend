@@ -15,11 +15,15 @@ router.get('/approved', (req, res) => {
 router.get('/cleardb', async (req, res) => {
   await clearDB();
   res.sendStatus(200);
-})
+});
+
+router.get('/cookie', async (req, res) => {
+  res.setHeader('Set-Cookie', ['type=ninja']);
+  res.sendStatus(200);
+});
 
 router.get('*', (req, res) => {
   res.status(404).send('Endpoint Not Found');
 });
-
 
 module.exports = router;

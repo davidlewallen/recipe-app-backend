@@ -10,22 +10,16 @@ const { isAuthenticated } = require('./utils');
 
 router.post('/login', (req, res, next) => {
   if (req.body.username === undefined || req.body.password === undefined) {
-    return res
-      .status(400)
-      .json({
-        message: 'Body should contain a "username" and "password" field'
-      });
+    return res.status(400).json({
+      message: 'Body should contain a "username" and "password" field',
+    });
   } else if (!req.body.username) {
-    return res
-      .status(400)
-      .json({
-        message: 'Enter a valid username'
-      });
+    return res.status(400).json({
+      message: 'Enter a valid username',
+    });
   } else if (!req.body.password) {
-    return res
-    .status(400)
-    .json({
-      message: 'Enter a valid password'
+    return res.status(400).json({
+      message: 'Enter a valid password',
     });
   }
 
@@ -38,7 +32,7 @@ router.post('/login', (req, res, next) => {
     if (!user) {
       return res
         .status(400)
-        .json({ message: 'Incorrect username and/or password.'});
+        .json({ message: 'Incorrect username and/or password.' });
     }
 
     const { verification } = await Account.getUserByUsername(req.body.username);
@@ -92,9 +86,19 @@ router.get('/logout', (req, res) => {
 });
 
 router.get('/auth', (req, res) => {
+  console.log(req.url);
+  console.log(req.originalUrl);
+  console.log(req.ip);
+  console.log(req.hostname);
+  console.log(req.protocol);
+  console.log(req.secure);
   const isAuth = req.isAuthenticated();
   const result = { isAuth };
 
+  res.cookie('test', 'hi', {
+    httpOnly: false,
+    domain: 'flamboyant-mestorf-5bde1.netlify.com',
+  });
   res.json(result);
 });
 
