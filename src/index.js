@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -25,6 +27,13 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.use((req, res, next) => {
+  res.set({
+    'Access-Control-Allow-Origin': '.mysavedrecipes.com',
+  });
+
+  next();
+});
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -36,17 +45,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 app.use('/api', routes);
 
-app.listen(3000, async () => {
+app.listen(3001, async () => {
   await server.start();
   console.log('HTTP running on port 3000');
 });
-
-https
-  .createServer(
-    {
-      key: fs.readFileSync('server.key'),
-      cert: fs.readFileSync('server.cert'),
-    },
-    app
-  )
-  .listen(3001, () => console.log('HTTPS running on port 3001'));
