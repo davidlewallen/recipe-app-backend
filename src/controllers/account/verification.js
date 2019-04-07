@@ -3,35 +3,32 @@ const uuidv1 = require('uuid/v1');
 const moment = require('moment');
 const get = require('lodash').get;
 
+const configs = require('../../../.config.js');
 const Account = require('../../models/account');
 
-const setAccountToUnverified = async (id) => {
+const setAccountToUnverified = async id => {
   const verificationKey = uuidv1();
 
-  await Account.findByIdAndUpdate(
-    id, {
-      verification: {
-        status: false,
-        key: verificationKey,
-        expires: moment().add(7, 'days'),
-      },
+  await Account.findByIdAndUpdate(id, {
+    verification: {
+      status: false,
+      key: verificationKey,
+      expires: moment().add(7, 'days'),
     },
-  );
+  });
 
   return verificationKey;
 };
 
-const setAccountToVerified = async (id) => {
-  await Account.findByIdAndUpdate(
-    id, {
-      verification: {
-        status: true,
-      },
+const setAccountToVerified = async id => {
+  await Account.findByIdAndUpdate(id, {
+    verification: {
+      status: true,
     },
-  );
+  });
 };
 
-const sendVerificationEmail = async (user) => {
+const sendVerificationEmail = async user => {
   const verificationKey = await setAccountToUnverified(user._id);
 
   const verificationParams = `id=${user._id}&key=${verificationKey}`;
@@ -39,18 +36,19 @@ const sendVerificationEmail = async (user) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD,
-    }
+      user: configs.email.username,
+      pass: configs.email.password,
+    },
   });
 
-  const url = `${process.env.NODE_ENV === 'dev'
-    ? 'http://localhost:3000'
-    : 'www.mysavedrecipes.com'
+  const url = `${
+    process.env.NODE_ENV === 'dev'
+      ? 'http://localhost:3000'
+      : 'www.mysavedrecipes.com'
   }/account/verify?${verificationParams}`;
 
   const mailOptions = {
-    from: process.env.EMAIL_USERNAME,
+    from: configs.email.username,
     to: user.email,
     subject: 'My Saved Recipes - Email Verification',
     text: `
@@ -71,7 +69,7 @@ const sendVerificationEmail = async (user) => {
   });
 };
 
-const resendVerificationEmail = async (id) => {
+const resendVerificationEmail = async id => {
   const user = await Account.findById(id);
 
   return sendVerificationEmail(user);
@@ -80,13 +78,13 @@ const resendVerificationEmail = async (id) => {
 const verify = async (res, user, key) => {
   if (get(user, 'verification.status')) {
     return res.status(200).send({
-      alreadyVerified: true
+      alreadyVerified: true,
     });
   }
 
   if (get(user, 'verification.key') !== key) {
     return res.status(400).send({
-      nonMatchingKey: true
+      nonMatchingKey: true,
     });
   }
 
@@ -97,7 +95,7 @@ const verify = async (res, user, key) => {
   }
 
   return res.status(400).send({
-    verificationExpired: true
+    verificationExpired: true,
   });
 };
 
