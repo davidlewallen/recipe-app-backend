@@ -27,13 +27,7 @@ app.use(
     saveUninitialized: false,
   })
 );
-app.use((req, res, next) => {
-  res.set({
-    'Access-Control-Allow-Origin': '.mysavedrecipes.com',
-  });
 
-  next();
-});
 app.use(passport.initialize());
 app.use(passport.session());
 
