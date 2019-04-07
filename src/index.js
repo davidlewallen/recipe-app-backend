@@ -1,25 +1,20 @@
-require('dotenv').config();
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const logger = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
-const https = require('https');
-const fs = require('fs');
 
 const server = require('./db');
 
 const app = express();
-
-const PORT = process.env.PORT || 3001;
 
 const routes = require('./routes');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(
   session({
     secret: 'secrets',
