@@ -20,13 +20,25 @@ app.use(
     secret: 'secrets',
     resave: true,
     saveUninitialized: false,
-    cookie: { domain: '.mysavedrecipes.com' },
+    ...(process.env.NODE_ENV !== 'dev'
+      ? { cookie: { domain: '.mysavedrecipes.com' } }
+      : {}),
   })
 );
 
 app.use((req, res, next) => {
+  const acceptedOrigins = [
+    'http://www.mysavedrecipes.com',
+    'http://mysavedrecipes.com',
+    'http://127.0.0.1:3000',
+  ];
+
+  let [origin] = acceptedOrigins;
+
+  if (acceptedOrigins.includes(req.headers.origin)) origin = req.headers.origin;
+
   res.set({
-    'Access-Control-Allow-Origin': 'http://www.mysavedrecipes.com',
+    'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Credentials': true,
     'Access-Control-Allow-Headers': 'Content-Type',
   });
