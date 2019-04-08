@@ -11,6 +11,14 @@ const app = express();
 
 const routes = require('./routes');
 
+const {
+  env: { NODE_ENV },
+} = process;
+
+let PORT = 3001;
+
+if (NODE_ENV === 'beta') PORT = 3002;
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -57,7 +65,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 app.use('/api', routes);
 
-app.listen(3001, async () => {
+app.listen(PORT, async () => {
   await server.start();
-  console.log('HTTP running on port 3000');
+  console.log(`HTTP running on port ${PORT}`);
 });
