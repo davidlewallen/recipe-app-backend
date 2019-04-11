@@ -14,13 +14,26 @@ const routes = require('./routes');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(
   session({
     secret: 'secrets',
     resave: true,
     saveUninitialized: false,
+    cookie: { domain: '.mysavedrecipes.com' },
   })
 );
+
+app.use((req, res, next) => {
+  res.set({
+    'Access-Control-Allow-Origin': 'http://www.mysavedrecipes.com',
+    'Access-Control-Allow-Credentials': true,
+    'Access-Control-Allow-Headers': 'Content-Type',
+  });
+
+  next();
+});
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -32,7 +45,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 app.use('/api', routes);
 
-app.listen(3000, async () => {
+app.listen(3001, async () => {
   await server.start();
   console.log('HTTP running on port 3000');
 });

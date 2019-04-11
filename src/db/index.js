@@ -1,11 +1,10 @@
-require('dotenv').config();
-
 const mongoose = require('mongoose');
+const configs = require('../../.config.js');
 
 module.exports = {
   start: async () => {
-    const USERNAME = encodeURIComponent(process.env.MONGO_USERNAME);
-    const PASSWORD = encodeURIComponent(process.env.MONGO_PASSWORD);
+    const USERNAME = encodeURIComponent(configs.mongo.username);
+    const PASSWORD = encodeURIComponent(configs.mongo.password);
 
     let uri;
 
