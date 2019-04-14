@@ -38,17 +38,6 @@ const sendVerificationEmail = async user => {
 
   const verificationParams = `id=${user._id}&key=${verificationKey}`;
 
-  // const transporter = nodemailer.createTransport({
-  //   service: 'gmail',
-  //   auth: {
-  //     type: 'OAuth2',
-  //     user: configs.email.username,
-  //     clientId: 'recipe-app',
-  //     clientSecret: configs.email.appPassword,
-  //     pass: configs.email.appPassword,
-  //   },
-  // });
-
   let verificationLink = `http://127.0.0.1:3000/account/verify?${verificationParams}`;
 
   if (process.env.NODE_ENV === 'production')
@@ -56,33 +45,19 @@ const sendVerificationEmail = async user => {
   if (process.env.NODE_ENV === 'beta')
     verificationLink = `https://beta.mysavedrecipes.com/account/verify?${verificationParams}`;
 
-  // const mailOptions = {
-  //   from: configs.email.username,
-  //   to: user.email,
-  //   subject: 'My Saved Recipes - Email Verification',
-  //   text: `
-  //     Thank you for signing up with My Saved Recipes!
-
-  //     Please follow the link below to verify your account.
-
-  //     ${verificationLink}
-  //   `,
-  // };
-
-  // transporter.sendMail(mailOptions, (error, info) => {
-  //   if (error) {
-  //     console.log(error);
-  //   } else {
-  //     console.log('Email sent: ' + info.response);
-  //   }
-  // });
-
   const data = {
-    from: 'Excited User <me@samples.mailgun.org>',
-    to: 'lewallen.david@gmail.com, YOU@YOUR_DOMAIN_NAME',
-    subject: 'Hello',
-    text: 'Testing some Mailgun awesomness!',
+    from: 'My Saved Recipes - <support@mysavedrecipes.com>',
+    to: user.email,
+    subject: 'My Saved Recipes - Email Verification',
+    text: `
+      Thank you for signing up with My Saved Recipes!
+
+      Please follow the link below to verify your account.
+
+      ${verificationLink}
+    `,
   };
+
   mg.messages().send(data, function(error, body) {
     console.log(body);
   });
