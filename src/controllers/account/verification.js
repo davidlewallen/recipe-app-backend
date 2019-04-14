@@ -1,10 +1,15 @@
-const nodemailer = require('nodemailer');
 const uuidv1 = require('uuid/v1');
 const moment = require('moment');
 const get = require('lodash').get;
+const mailgun = require('mailgun-js');
 
 const configs = require('../../../.config.js');
 const Account = require('../../models/account');
+
+const mg = mailgun({
+  apiKey: configs.email.apiKey,
+  domain: 'mail.mysavedrecipes.com',
+});
 
 const setAccountToUnverified = async id => {
   const verificationKey = uuidv1();
@@ -33,22 +38,15 @@ const sendVerificationEmail = async user => {
 
   const verificationParams = `id=${user._id}&key=${verificationKey}`;
 
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: configs.email.username,
-      pass: configs.email.password,
-    },
-  });
+  let verificationLink = `http://127.0.0.1:3000/account/verify?${verificationParams}`;
 
-  const url = `${
-    process.env.NODE_ENV === 'dev'
-      ? 'http://localhost:3000'
-      : 'www.mysavedrecipes.com'
-  }/account/verify?${verificationParams}`;
+  if (process.env.NODE_ENV === 'production')
+    verificationLink = `https://mysavedrecipes.com/account/verify?${verificationParams}`;
+  if (process.env.NODE_ENV === 'beta')
+    verificationLink = `https://beta.mysavedrecipes.com/account/verify?${verificationParams}`;
 
-  const mailOptions = {
-    from: configs.email.username,
+  const data = {
+    from: 'My Saved Recipes  <support@mail.mysavedrecipes.com>',
     to: user.email,
     subject: 'My Saved Recipes - Email Verification',
     text: `
@@ -56,16 +54,12 @@ const sendVerificationEmail = async user => {
 
       Please follow the link below to verify your account.
 
-      ${url}
+      ${verificationLink}
     `,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log('Email sent: ' + info.response);
-    }
+  mg.messages().send(data, function(error, body) {
+    console.log(body);
   });
 };
 
