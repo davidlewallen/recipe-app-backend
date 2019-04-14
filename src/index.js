@@ -29,8 +29,8 @@ app.use(
 
 app.use((req, res, next) => {
   const acceptedOrigins = [
-    'http://www.mysavedrecipes.com',
     'http://mysavedrecipes.com',
+    'http://beta.mysavedrecipes.com',
     'http://127.0.0.1:3000',
   ];
 
