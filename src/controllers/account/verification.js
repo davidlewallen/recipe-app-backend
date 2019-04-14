@@ -46,7 +46,7 @@ const sendVerificationEmail = async user => {
     verificationLink = `https://beta.mysavedrecipes.com/account/verify?${verificationParams}`;
 
   const data = {
-    from: 'My Saved Recipes - <support@mysavedrecipes.com>',
+    from: 'My Saved Recipes  <support@mail.mysavedrecipes.com>',
     to: user.email,
     subject: 'My Saved Recipes - Email Verification',
     text: `
