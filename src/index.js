@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
 const logger = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
@@ -10,6 +9,8 @@ const server = require('./db');
 const app = express();
 
 const routes = require('./routes');
+
+const PORT = process.env.PORT || 3001;
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -28,8 +29,8 @@ app.use(
 
 app.use((req, res, next) => {
   const acceptedOrigins = [
-    'http://www.mysavedrecipes.com',
     'http://mysavedrecipes.com',
+    'http://beta.mysavedrecipes.com',
     'http://127.0.0.1:3000',
   ];
 
@@ -57,7 +58,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 app.use('/api', routes);
 
-app.listen(3001, async () => {
+app.listen(PORT, async () => {
   await server.start();
-  console.log('HTTP running on port 3000');
+  console.log(`HTTP running on port ${PORT}`);
 });
