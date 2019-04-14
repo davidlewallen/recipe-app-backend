@@ -41,15 +41,12 @@ const sendVerificationEmail = async user => {
     },
   });
 
-  let verificationLink =
-    'http://127.0.0.1:3000/account/verify?${verificationParams}';
+  let verificationLink = `http://127.0.0.1:3000/account/verify?${verificationParams}`;
 
   if (process.env.NODE_ENV === 'production')
-    verificationLink =
-      'https://mysavedrecipes.com/account/verify?${verificationParams}';
+    verificationLink = `https://mysavedrecipes.com/account/verify?${verificationParams}`;
   if (process.env.NODE_ENV === 'beta')
-    verificationLink =
-      'https://beta.mysavedrecipes.com/account/verify?${verificationParams}';
+    verificationLink = `https://beta.mysavedrecipes.com/account/verify?${verificationParams}`;
 
   const mailOptions = {
     from: configs.email.username,
