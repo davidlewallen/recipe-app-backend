@@ -31,7 +31,7 @@ app.use((req, res, next) => {
   const acceptedOrigins = [
     'http://mysavedrecipes.com',
     'http://beta.mysavedrecipes.com',
-    'http://127.0.0.1:3000',
+    'http://localhost:3000',
   ];
 
   let [origin] = acceptedOrigins;
