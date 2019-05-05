@@ -40,7 +40,6 @@
     "start": "cross-env PORT=3001 NODE_ENV=production node ./src/index.js",
     "start-beta": "cross-env PORT=3002 NODE_ENV=beta node ./src/index.js",
     "dev": "cross-env PORT=3001 NODE_ENV=dev nodemon -w ./src ./src/index.js",
-    "beta": "cross-env NODE_ENV=beta node ./src/index.js",
     "test": "cross-env NODE_ENV=test jest --env=node --testPathPattern=src --watch --no-watchman",
     "test:automation": "cross-env PORT=3001 NODE_ENV=test nodemon -w ./src ./src/index.js",
     "test:coverage": "cross-env NODE_ENV=test jest --env=node --testPathPattern=src --coverage --collectCoverageFrom=server/**/*.{js,jsx,mjs} --i --watch"
