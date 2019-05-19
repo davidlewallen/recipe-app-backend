@@ -3,27 +3,37 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const server = require('./db');
-
-const app = express();
-
 const routes = require('./routes');
 
 const PORT = process.env.PORT || 3001;
+
+const app = express();
+const store = new MongoDBStore({
+  uri: 'mongodb://localhost:27017/mysavedrecipes',
+  collection: 'sessions',
+});
+
+store.on('error', error => console.log('MongoDBStore Error:', error));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
-  session({
-    secret: 'secrets',
+  require('express-session')({
+    secret: 'This is a secret',
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      ...(process.env.NODE_ENV !== 'dev'
+        ? { domain: '.mysavedrecipes.com' }
+        : {}),
+    },
+    store: store,
     resave: true,
-    saveUninitialized: false,
-    ...(process.env.NODE_ENV !== 'dev'
-      ? { cookie: { domain: '.mysavedrecipes.com' } }
-      : {}),
+    saveUninitialized: true,
   })
 );
 
