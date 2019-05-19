@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
   session({
     secret: 'secrets',
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     ...(process.env.NODE_ENV !== 'dev'
       ? { cookie: { domain: '.mysavedrecipes.com' } }
@@ -42,14 +42,9 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Credentials': true,
     'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'DELETE',
   });
 
-  if (process.env.NODE_ENV === 'dev' && req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  } else {
-    next();
-  }
+  next();
 });
 
 app.use(passport.initialize());
