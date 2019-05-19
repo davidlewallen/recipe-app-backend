@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(
   require('express-session')({
-    secret: 'This is a secret',
+    secret: process.env.MONGO_SESSIONS_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       ...(process.env.NODE_ENV !== 'dev'
