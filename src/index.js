@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
@@ -7,14 +9,12 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 const server = require('./db');
 const routes = require('./routes');
+const sessionsConfig = require('./config/sessionStore');
 
 const PORT = process.env.PORT || 3001;
 
 const app = express();
-const store = new MongoDBStore({
-  uri: 'mongodb://localhost:27017/mysavedrecipes',
-  collection: 'sessions',
-});
+const store = new MongoDBStore(sessionsConfig);
 
 store.on('error', error => console.log('MongoDBStore Error:', error));
 
@@ -52,9 +52,14 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Credentials': true,
     'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'DELETE',
   });
 
-  next();
+  if (process.env.NODE_ENV === 'dev' && req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  } else {
+    next();
+  }
 });
 
 app.use(passport.initialize());
