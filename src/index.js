@@ -52,9 +52,14 @@ app.use((req, res, next) => {
     'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Credentials': true,
     'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'DELETE',
   });
 
-  next();
+  if (process.env.NODE_ENV === 'dev' && req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  } else {
+    next();
+  }
 });
 
 app.use(passport.initialize());
