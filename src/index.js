@@ -21,7 +21,6 @@ app.use(
     secret: 'secrets',
     resave: false,
     saveUninitialized: false,
-    httpOnly: false,
     ...(process.env.NODE_ENV !== 'dev'
       ? { cookie: { domain: '.mysavedrecipes.com' } }
       : {}),
