@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/submit/:recipeURL',  async (req, res) => {
+router.post('/submit/:recipeURL', async (req, res) => {
   try {
     const result = await Recipe.submit(req.params.recipeURL, req.user._id);
 
@@ -27,6 +27,11 @@ router.post('/submit/:recipeURL',  async (req, res) => {
   } catch (err) {
     res.status(500).send(err);
   }
+});
+
+router.post('/manual-submit', async (req, res) => {
+  Recipe.manualSubmit(req.user._id, req.body);
+  res.sendStatus(200);
 });
 
 router.delete('/delete/:recipeId', async (req, res) => {
