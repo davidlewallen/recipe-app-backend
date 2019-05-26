@@ -121,10 +121,10 @@ async function manualSubmit(
     },
   });
 
-  const { _id } = await recipe.save();
-  const savedRecipe = await saveRecipeToUser(_id, userId);
+  const result = await recipe.save();
+  await saveRecipeToUser(recipe._id, userId);
 
-  return savedRecipe;
+  return result;
 }
 
 const remove = async (recipeId, userId) => {
