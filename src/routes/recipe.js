@@ -15,7 +15,17 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/submit/:recipeURL',  async (req, res) => {
+router.post('/submit', async (req, res) => {
+  try {
+    const result = await Recipe.manualSubmit(req.user._id, req.body);
+
+    res.json(result);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+router.post('/submit/:recipeURL', async (req, res) => {
   try {
     const result = await Recipe.submit(req.params.recipeURL, req.user._id);
 
