@@ -11,6 +11,8 @@ const server = require('./db');
 const routes = require('./routes');
 const sessionsConfig = require('./config/sessionStore');
 
+console.log(process.env);
+
 const PORT = process.env.PORT || 3001;
 
 const app = express();
