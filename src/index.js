@@ -12,6 +12,7 @@ const routes = require('./routes');
 const sessionsConfig = require('./config/sessionStore');
 
 const PORT = process.env.PORT || 3001;
+console.log('port', PORT);
 
 const app = express();
 const store = new MongoDBStore(sessionsConfig);
