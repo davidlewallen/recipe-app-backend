@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const configs = require('../../.config.js');
 
 module.exports = {
   start: async () => {
-    const USERNAME = encodeURIComponent(configs.mongo.username);
-    const PASSWORD = encodeURIComponent(configs.mongo.password);
+    const USERNAME = encodeURIComponent(process.env.MLAB_USERNAME);
+    const PASSWORD = encodeURIComponent(process.env.MLAB_PASSWORD);
 
     let dbURL = `mongodb://${USERNAME}:${PASSWORD}@ds161446.mlab.com:61446/recipe`;
 
@@ -15,8 +14,12 @@ module.exports = {
     if (process.env.NODE_ENV === 'test')
       dbURL = 'mongodb://127.0.0.1:27017/recipe-app-test';
 
+    console.log(dbURL);
     mongoose.Promise = global.Promise;
-    await mongoose.connect(dbURL, { useMongoClient: true });
+    await mongoose.connect(dbURL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'MongoDB connection error:'));
     if (process.env.NODE_ENV !== 'test') {

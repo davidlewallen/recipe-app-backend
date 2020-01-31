@@ -1,8 +1,8 @@
 const {
-  env: { MONGO_SESSIONS_URI },
+  env: { MLAB_SESSIONS_URI },
 } = process;
 
 module.exports = {
-  uri: MONGO_SESSIONS_URI,
+  uri: MLAB_SESSIONS_URI,
   collection: 'sessions',
 };

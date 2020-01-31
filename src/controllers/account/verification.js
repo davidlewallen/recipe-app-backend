@@ -3,11 +3,10 @@ const moment = require('moment');
 const get = require('lodash').get;
 const mailgun = require('mailgun-js');
 
-const configs = require('../../../.config.js');
 const Account = require('../../models/account');
 
 const mg = mailgun({
-  apiKey: configs.email.apiKey,
+  apiKey: process.env.MAILGUN_API_KEY,
   domain: 'mail.mysavedrecipes.com',
 });
 
