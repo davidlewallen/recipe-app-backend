@@ -11,7 +11,7 @@ const server = require('./db');
 const routes = require('./routes');
 const sessionsConfig = require('./config/sessionStore');
 
-const PORT = process.env.HEROKU_PORT || process.env.PORT || 3001;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 const store = new MongoDBStore(sessionsConfig);
