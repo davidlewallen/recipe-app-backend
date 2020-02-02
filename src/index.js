@@ -28,8 +28,9 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       ...(process.env.NODE_ENV !== 'dev'
-        ? { domain: '.mysavedrecipes.com' }
-        : {}),
+        ? { domain: 'lvh.me:3000' }
+        : // ? { domain: '.mysavedrecipes.com' }
+          {}),
     },
     store: store,
     resave: true,
