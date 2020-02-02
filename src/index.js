@@ -42,6 +42,7 @@ app.use((req, res, next) => {
     'http://mysavedrecipes.com',
     'http://beta.mysavedrecipes.com',
     'http://localhost:3000',
+    'http://lvh.me:3000',
   ];
 
   let [origin] = acceptedOrigins;
