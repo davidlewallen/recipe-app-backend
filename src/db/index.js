@@ -15,13 +15,16 @@ module.exports = {
       dbURL = 'mongodb://127.0.0.1:27017/recipe-app-test';
 
     console.log(dbURL);
-    mongoose.Promise = global.Promise;
+
     await mongoose.connect(dbURL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
+
     const db = mongoose.connection;
+
     db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
     if (process.env.NODE_ENV !== 'test') {
       db.once('open', () => console.log('connected mongoose'));
     }

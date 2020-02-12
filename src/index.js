@@ -27,9 +27,9 @@ app.use(
     secret: process.env.MONGO_SESSIONS_SECRET,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7,
-      ...(process.env.NODE_ENV !== 'dev'
-        ? { domain: '.mysavedrecipes.com' }
-        : {}),
+      ...(process.env.NODE_ENV === 'dev'
+        ? { Domain: 'app.lvh.me:3000' }
+        : { Domain: '.mysavedrecipes.com' }),
     },
     store: store,
     resave: true,
@@ -39,9 +39,10 @@ app.use(
 
 app.use((req, res, next) => {
   const acceptedOrigins = [
-    'http://mysavedrecipes.com',
+    'https://www.mysavedrecipes.com',
     'http://beta.mysavedrecipes.com',
     'http://localhost:3000',
+    'http://app.lvh.me:3000',
   ];
 
   let [origin] = acceptedOrigins;

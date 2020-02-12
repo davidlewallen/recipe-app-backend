@@ -37,7 +37,7 @@ const sendVerificationEmail = async user => {
 
   const verificationParams = `id=${user._id}&key=${verificationKey}`;
 
-  let verificationLink = `http://127.0.0.1:3000/account/verify?${verificationParams}`;
+  let verificationLink = `http://app.lvh.me:3000/account/verify?${verificationParams}`;
 
   if (process.env.NODE_ENV === 'production')
     verificationLink = `https://mysavedrecipes.com/account/verify?${verificationParams}`;
