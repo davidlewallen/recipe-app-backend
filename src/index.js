@@ -39,7 +39,7 @@ app.use(
 
 app.use((req, res, next) => {
   const acceptedOrigins = [
-    'http://mysavedrecipes.com',
+    'https://mysavedrecipes.com',
     'http://beta.mysavedrecipes.com',
     'http://localhost:3000',
     'http://app.lvh.me:3000',
